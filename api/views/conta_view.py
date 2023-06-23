@@ -1,8 +1,11 @@
+#views mostra nossa api
+
 from flask import request, make_response, jsonify
 from flask_restful import Resource
 from ..schemas import conta_schema
 from ..entidades import conta
 from ..services import conta_service
+from api import api
 
 class ContaList(Resource):
     def post(self):
@@ -24,3 +27,5 @@ class ContaList(Resource):
 
 class ContaDetail(Resource):
     pass
+
+api.add_resource(ContaList, '/contas')
