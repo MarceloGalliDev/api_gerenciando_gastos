@@ -26,6 +26,15 @@ def remover_conta(conta):
     db.session.delete(conta)
     db.session.commit()
     
+#aqui passamos a conta que encontramos no banco de dados e passamos os novos dados
+#é similar a uma junção de um get e um post   
+def editar_conta(conta, conta_nova):
+    conta.nome = conta_nova.nome
+    conta.descricao = conta_nova.descricao
+    conta.saldo = conta_nova.saldo
+    db.session.commit()
+    return conta
+    
     
     
     

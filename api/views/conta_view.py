@@ -40,6 +40,30 @@ class ContaDetail(Resource):
             return make_response(jsonify("Conta não encontrada!"), 404)
         cs = conta_schema.ContaSchema()
         return make_response(cs.jsonify(conta), 200)
+    
+    
+    def put(self, id,):
+        #verificamos se existe a conta pelo id
+        conta_bd = conta_service.listar_conta_id(id)
+        if conta_bd is None:
+            return make_response(jsonify("Conta não encontrada!"), 404)
+        #vamos validar as info que vem através do corpo da requisição
+        cs = conta_schema.ContaSchema()
+        #estamos validando vindo atraves da nossa requisição com base no nosso ContaSchema
+        validate = cs.validate(request.json)
+        if validate:
+            return make_response(jsonify(validate), 400)
+        else:
+            #recupero os dados a serem editados
+            nome = request.json['nome']
+            descricao = request.json['descricao']
+            saldo = request.json['saldo']
+            #criamos um novo objeto do tipo Conta com esses dados
+            conta_nova = conta.Conta(nome=nome, descricao=descricao, saldo=saldo)
+            #enviaremos os dados para que sejam editados os dados einseridos no banco de dados
+            result = conta_service.editar_conta(conta_bd, conta_nova)
+            return make_response(cs.jsonify(result), 201)
+
 
     def delete(self, id):
         #aqui buscamos o id
