@@ -26,8 +26,9 @@ class TransacaoList(Resource):
             if conta_service.listar_conta_id(conta) is None:
                 return make_response("Conta não existe", 404)
             else:
+                #os valors aqui citados, são os recebidos acima
                 transacao_nova = transacao.Transacao(nome=nome, descricao=descricao,
-                                                     valor=valor, tipo=tipo)
+                                                     valor=valor, tipo=tipo, conta=conta)
                 result = transacao_service.cadastrar_transacao(transacao_nova)
                 return make_response(cs.jsonify(result), 201)
 
@@ -53,10 +54,14 @@ class TransacaoDetail(Resource):
             descricao = request.json["descricao"]
             valor = request.json["valor"]
             tipo = request.json["tipo"]
-            transacao_nova = transacao.Transacao(nome=nome, descricao=descricao,
-                                                 valor=valor, tipo=tipo)
-            result = transacao_service.editar_transacao(transacao_bd, transacao_nova)
-            return make_response(cs.jsonify(result), 200)
+            conta = request.json["conta_id"]
+            if conta_service.listar_conta_id(conta) is None:
+                return make_response('Conta não encontrada!', 400)
+            else:
+                transacao_nova = transacao.Transacao(nome=nome, descricao=descricao,
+                                                    valor=valor, tipo=tipo, conta=conta)
+                result = transacao_service.editar_transacao(transacao_bd, transacao_nova)
+                return make_response(cs.jsonify(result), 200)
 
 
     def delete(self, id):

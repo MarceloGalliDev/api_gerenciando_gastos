@@ -2,11 +2,12 @@
 
 
 class Transacao():
-    def __init__(self, nome, descricao, valor, tipo):
+    def __init__(self, nome, descricao, valor, tipo, conta):
         self.__nome = nome
         self.__descricao = descricao
         self.__valor = valor
         self.__tipo = tipo
+        self.__conta = conta
 
     @property
     def nome(self):
@@ -39,3 +40,11 @@ class Transacao():
     @tipo.setter
     def tipo(self, tipo):
         self.__tipo = tipo
+        
+    @property
+    def conta(self):
+        return self.__conta
+
+    @conta.setter
+    def conta(self, conta):
+        self.__conta = conta
