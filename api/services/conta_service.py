@@ -10,13 +10,21 @@ def cadastrar_conta(conta):
     db.session.add(conta_bd)
     #aqui persistimos os dados
     db.session.commit()
-
+    #retornando a conta
     return conta_bd    
+
+def listar_contas():
+    contas = conta_model.Conta.query.all()
+    return contas
+
+def listar_conta_id(id):
+    #buscamos o model, filtramos com id e retornamos o primeiro
+    conta = conta_model.Conta.query.filter_by(id=id).first()
+    return conta
     
-    
-    
-    
-    
+def remover_conta(conta):
+    db.session.delete(conta)
+    db.session.commit()
     
     
     
