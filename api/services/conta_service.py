@@ -35,7 +35,31 @@ def editar_conta(conta, conta_nova):
     db.session.commit()
     return conta
     
-    
+# o valor_antigo assume um valor padrão de none, pois nem sempre será usado
+def alterar_saldo_conta(id_conta, transacao, tipo_operacao, valor_antigo=None):
+    # 1: Cadastro
+    # 2: Edição
+    # 3: Remoção 
+    conta = listar_conta_id(id_conta)
+    if tipo_operacao == 1:
+        if transacao.tipo == "1":
+            conta.saldo += transacao.valor
+        else:
+            conta.saldo -= transacao.valor
+    elif tipo_operacao == 2:
+        if transacao.tipo == "1":
+            conta.saldo -= valor_antigo
+            conta.saldo += transacao.valor
+        else:
+            conta.saldo += valor_antigo
+            conta.saldo -= transacao.valor
+    else:
+        # aqui vamos pegar o tipo, mas somente o valor do tipo se é 1 ou 2
+        if transacao.tipo.value == 1:
+            conta.saldo -= transacao.valor
+        else:
+            conta.saldo += transacao.valor
+    db.session.commit()
     
     
     

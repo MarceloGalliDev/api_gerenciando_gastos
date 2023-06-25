@@ -16,3 +16,8 @@ class Transacao(db.Model):
     tipo = db.Column(db.Enum(TipoEnum), nullable=False)
     #aqui relacionamos o id da conta com o campo conta_id, vai armazenar o id atrelado ao id da tabela conta
     conta_id = db.Column(db.Integer, db.ForeignKey('conta.id'))
+    #aqui vamos chamar todas as transações atreladas a conta
+    #atrelamos um relationship a Conta, adicionando o indicamento de processo inverso
+    #quando chamar-mos o db.backref de uma conta, ele vai listar todas transações de uma conta
+    # lazy='dynamic' é para retorna todas transações em uma mesma requisição
+    conta = db.relationship("Conta", backref=db.backref("transacoes", lazy="dynamic"))
