@@ -3,7 +3,7 @@ from flask_restful import Resource
 from ..schemas import login_schema
 from flask import request, make_response, jsonify
 from ..services.usuario_service import listar_usuarios_email
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, create_refresh_token
 from datetime import timedelta
 
 class LoginList(Resource):
@@ -27,8 +27,12 @@ class LoginList(Resource):
                 #tempo de validade do token
                 expires_delta=timedelta(seconds=200)
             )
+            refresh_token = create_refresh_token(
+                identity=usuario_bd.id,
+            )
             return make_response(jsonify({
                 'access_token': access_token,
+                'refresh_token': refresh_token,
                 'message': 'Login realizado com sucesso!'
             }), 200)
         return make_response(jsonify({

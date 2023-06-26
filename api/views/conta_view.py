@@ -6,8 +6,10 @@ from ..schemas import conta_schema
 from ..entidades import conta
 from ..services import conta_service
 from api import api
+from flask_jwt_extended import jwt_required
 
 class ContaList(Resource):
+    @jwt_required()
     def get(self):
         #aqui recebemos os dados la do service
         contas = conta_service.listar_contas()
@@ -15,6 +17,8 @@ class ContaList(Resource):
         cs = conta_schema.ContaSchema(many=True)
         return make_response(cs.jsonify(contas), 200)
     
+    
+    @jwt_required()
     def post(self):
         #criando instancia 
         cs = conta_schema.ContaSchema()
@@ -34,6 +38,7 @@ class ContaList(Resource):
             return make_response(cs.jsonify(result), 201)
 
 class ContaDetail(Resource):
+    @jwt_required()
     def get(self, id):
         conta = conta_service.listar_conta_id(id)
         if conta is None:
@@ -42,6 +47,7 @@ class ContaDetail(Resource):
         return make_response(cs.jsonify(conta), 200)
     
     
+    @jwt_required()
     def put(self, id,):
         #verificamos se existe a conta pelo id
         conta_bd = conta_service.listar_conta_id(id)
@@ -65,6 +71,7 @@ class ContaDetail(Resource):
             return make_response(cs.jsonify(result), 201)
 
 
+    @jwt_required()
     def delete(self, id):
         #aqui buscamos o id
         conta = conta_service.listar_conta_id(id)

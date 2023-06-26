@@ -1,8 +1,10 @@
 # Comandos Flask
     - flask run --debug
+    - flask shell
 
 ## Localizando API
     - export FLASK_APP=api
+    - export FLASK_ENV=development
 
 ## Migrate
     - flask db init
