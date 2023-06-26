@@ -65,8 +65,9 @@ class ContaDetail(Resource):
             nome = request.json['nome']
             descricao = request.json['descricao']
             saldo = request.json['saldo']
+            usuario = request.json['usuario_id']
             #criamos um novo objeto do tipo Conta com esses dados
-            conta_nova = conta.Conta(nome=nome, descricao=descricao, saldo=saldo)
+            conta_nova = conta.Conta(nome=nome, descricao=descricao, saldo=saldo, usuario=usuario)
             #enviaremos os dados para que sejam editados os dados einseridos no banco de dados
             result = conta_service.editar_conta(conta_bd, conta_nova)
             return make_response(cs.jsonify(result), 201)
