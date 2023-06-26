@@ -5,6 +5,7 @@ from flask import request, make_response, jsonify
 from ..entidades import transacao
 from ..services import transacao_service, conta_service
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from ..decorators import autorizacao_user
 
 class TransacaoList(Resource):
     @jwt_required()
@@ -37,7 +38,7 @@ class TransacaoList(Resource):
                 return make_response(cs.jsonify(result), 201)
 
 class TransacaoDetail(Resource):
-    @jwt_required()
+    @autorizacao_user.transacao_user
     def get(self, id):
         transacao = transacao_service.listar_transacao_id(id)
         if transacao is None:
@@ -46,11 +47,9 @@ class TransacaoDetail(Resource):
         return make_response(cs.jsonify(transacao), 200)
 
 
-    @jwt_required()
+    @autorizacao_user.transacao_user
     def put(self, id):
         transacao_bd = transacao_service.listar_transacao_id(id)
-        if transacao_bd is None:
-            return make_response(jsonify("Transação não encontrada!"), 404)
         cs = transacao_schema.TransacaoSchema()
         validate = cs.validate(request.json)
         if validate:
@@ -70,11 +69,9 @@ class TransacaoDetail(Resource):
                 return make_response(cs.jsonify(result), 200)
 
 
-    @jwt_required()
+    @autorizacao_user.transacao_user
     def delete(self, id):
         transacao = transacao_service.listar_transacao_id(id)
-        if transacao is None:
-            return make_response(jsonify("Transação não encontrada!"), 404)
         transacao_service.remover_transacao(transacao)
         return make_response('', 204)
 
