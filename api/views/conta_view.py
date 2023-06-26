@@ -4,9 +4,9 @@ from flask import request, make_response, jsonify
 from flask_restful import Resource
 from ..schemas import conta_schema
 from ..entidades import conta
-from ..services import conta_service
+from ..services import conta_service, usuario_service
 from api import api
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 class ContaList(Resource):
     @jwt_required()
@@ -32,6 +32,8 @@ class ContaList(Resource):
             saldo = request.json['saldo']
             usuario = request.json['usuario_id']
             #aqui estamos criando um objeto do tipo conta e inserindo os dados nele(entidade)
+            if usuario_service.listar_usuarios_id(usuario) is None:
+                return make_response("Usuário não existe!", 404)
             conta_nova = conta.Conta(nome=nome, descricao=descricao, saldo=saldo, usuario=usuario)
             #aqui vamos cadastrar no banco de dados(service)
             result = conta_service.cadastrar_conta(conta_nova)
@@ -67,6 +69,8 @@ class ContaDetail(Resource):
             saldo = request.json['saldo']
             usuario = request.json['usuario_id']
             #criamos um novo objeto do tipo Conta com esses dados
+            if usuario_service.listar_usuarios_id(usuario) is None:
+                return make_response("Usuário não existe!", 404)
             conta_nova = conta.Conta(nome=nome, descricao=descricao, saldo=saldo, usuario=usuario)
             #enviaremos os dados para que sejam editados os dados einseridos no banco de dados
             result = conta_service.editar_conta(conta_bd, conta_nova)
