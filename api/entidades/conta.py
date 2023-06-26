@@ -28,3 +28,11 @@ class Conta():
     @saldo.setter
     def saldo(self, saldo):
         self.__saldo = saldo
+        
+    @property
+    def usuario(self):
+        return self.__usuario
+
+    @usuario.setter
+    def usuario(self, usuario):
+        self.__usuario = usuario

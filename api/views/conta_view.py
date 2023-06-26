@@ -30,6 +30,7 @@ class ContaList(Resource):
             nome = request.json['nome']
             descricao = request.json['descricao']
             saldo = request.json['saldo']
+            usuario = request.json['usuario_id']
             #aqui estamos criando um objeto do tipo conta e inserindo os dados nele(entidade)
             conta_nova = conta.Conta(nome=nome, descricao=descricao, saldo=saldo)
             #aqui vamos cadastrar no banco de dados(service)

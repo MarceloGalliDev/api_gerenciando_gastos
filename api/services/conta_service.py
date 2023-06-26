@@ -5,7 +5,7 @@ from api import db
 
 #vamos receber uma conta como paramêtro
 def cadastrar_conta(conta):
-    conta_bd = conta_model.Conta(nome=conta.nome, descricao=conta.descricao, saldo=conta.saldo)
+    conta_bd = conta_model.Conta(nome=conta.nome, descricao=conta.descricao, saldo=conta.saldo, usuario_id=conta.usuario)
     #estamos adicionando a secão ao banco de dados adicionando a conta
     db.session.add(conta_bd)
     #aqui persistimos os dados
