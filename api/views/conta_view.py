@@ -7,6 +7,7 @@ from ..entidades import conta
 from ..services import conta_service, usuario_service
 from api import api
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from ..decorators import autorizacao_user
 
 class ContaList(Resource):
     @jwt_required()
@@ -41,21 +42,17 @@ class ContaList(Resource):
             return make_response(cs.jsonify(result), 201)
 
 class ContaDetail(Resource):
-    @jwt_required()
+    @autorizacao_user.conta_user
     def get(self, id):
         conta = conta_service.listar_conta_id(id)
-        if conta is None:
-            return make_response(jsonify("Conta não encontrada!"), 404)
         cs = conta_schema.ContaSchema()
         return make_response(cs.jsonify(conta), 200)
     
     
-    @jwt_required()
+    @autorizacao_user.conta_user
     def put(self, id,):
         #verificamos se existe a conta pelo id
         conta_bd = conta_service.listar_conta_id(id)
-        if conta_bd is None:
-            return make_response(jsonify("Conta não encontrada!"), 404)
         #vamos validar as info que vem através do corpo da requisição
         cs = conta_schema.ContaSchema()
         #estamos validando vindo atraves da nossa requisição com base no nosso ContaSchema
@@ -75,12 +72,10 @@ class ContaDetail(Resource):
             return make_response(cs.jsonify(result), 201)
 
 
-    @jwt_required()
+    @autorizacao_user.conta_user
     def delete(self, id):
         #aqui buscamos o id
         conta = conta_service.listar_conta_id(id)
-        if conta is None:
-            return make_response(jsonify("Conta não encontrada!"), 404)
         conta_service.remover_conta(conta)
         return make_response('', 204)
         
