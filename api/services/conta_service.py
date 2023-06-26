@@ -13,8 +13,9 @@ def cadastrar_conta(conta):
     #retornando a conta
     return conta_bd    
 
-def listar_contas():
-    contas = conta_model.Conta.query.all()
+def listar_contas(usuario):
+    #aqui retornamos apenas as contas de acordo com id logado
+    contas = conta_model.Conta.query.filter_by(usuario_id=usuario).all()
     return contas
 
 def listar_conta_id(id):

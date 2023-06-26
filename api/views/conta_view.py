@@ -11,8 +11,10 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 class ContaList(Resource):
     @jwt_required()
     def get(self):
+        #vamos pegar o usuario logado pelo access token
+        usuario = get_jwt_identity()
         #aqui recebemos os dados la do service
-        contas = conta_service.listar_contas()
+        contas = conta_service.listar_contas(usuario=usuario)
         #vamos transforma o arquivo do tipo python para o tipo json
         cs = conta_schema.ContaSchema(many=True)
         return make_response(cs.jsonify(contas), 200)
@@ -30,10 +32,8 @@ class ContaList(Resource):
             nome = request.json['nome']
             descricao = request.json['descricao']
             saldo = request.json['saldo']
-            usuario = request.json['usuario_id']
             #aqui estamos criando um objeto do tipo conta e inserindo os dados nele(entidade)
-            if usuario_service.listar_usuarios_id(usuario) is None:
-                return make_response("Usuário não existe!", 404)
+            usuario = get_jwt_identity()
             conta_nova = conta.Conta(nome=nome, descricao=descricao, saldo=saldo, usuario=usuario)
             #aqui vamos cadastrar no banco de dados(service)
             result = conta_service.cadastrar_conta(conta_nova)
@@ -67,10 +67,8 @@ class ContaDetail(Resource):
             nome = request.json['nome']
             descricao = request.json['descricao']
             saldo = request.json['saldo']
-            usuario = request.json['usuario_id']
             #criamos um novo objeto do tipo Conta com esses dados
-            if usuario_service.listar_usuarios_id(usuario) is None:
-                return make_response("Usuário não existe!", 404)
+            usuario = get_jwt_identity()
             conta_nova = conta.Conta(nome=nome, descricao=descricao, saldo=saldo, usuario=usuario)
             #enviaremos os dados para que sejam editados os dados einseridos no banco de dados
             result = conta_service.editar_conta(conta_bd, conta_nova)
