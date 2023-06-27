@@ -8,6 +8,7 @@ flask-marshmallow==0.15.0
 Flask-Migrate==4.0.4
 Flask-RESTful==0.3.10
 Flask-SQLAlchemy==3.0.5
+gunicorn==20.1.0
 itsdangerous==2.1.2
 Jinja2==3.1.2
 Mako==1.2.4
@@ -17,6 +18,7 @@ marshmallow-sqlalchemy==0.29.0
 mysqlclient==2.1.1
 packaging==23.1
 passlib==1.7.4
+psycopg2-binary==2.9.6
 PyJWT==2.7.0
 python-dotenv==1.0.0
 pytz==2023.3
