@@ -17,3 +17,8 @@
     3. criar schemas
     4. criar services
     5. criar views
+
+## Heroku
+    - install git
+    - install heroku cli
+    - install gunicorn
